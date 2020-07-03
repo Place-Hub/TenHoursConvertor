@@ -35,4 +35,8 @@ def convertor_replyer(file, max_time):
 def convertor_mp4_to_mp3(file):
     moviepy.editor.VideoFileClip(file).audio.write_audiofile(get_file_name(file)+".mp3")
 
-convertor_mp4_to_mp3("3s.mp4")
+import youtube_dl
+def youtube_video_downloader(url):
+    ydl_opts = {}
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([url])
