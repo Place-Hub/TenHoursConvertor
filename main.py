@@ -2,23 +2,16 @@ import moviepy.editor
 
 def get_file_name(file):
     if str(file).endswith('.mp4'):
-        return str(file).replace(".mp4", "")
+        #return str(file).replace(".mp4", "")
+        return 'pd'
     if str(file).endswith('.mp3'):
-        return str(file).replace(".mp4", "")
-        
-def convertor_replyer(file, max_time):
-    if str(file).endswith(".mp4"):
-        
-        clip = moviepy.editor.VideoFileClip(file)
-        clip_list = []
-        i=0
-        while i+clip.duration < max_time:
-            clip_list.append(clip)
-            i+=clip.duration
-            print((i/max_time)*100,"%")
-        print("100%")
-        moviepy.editor.concatenate_videoclips(clip_list).write_videofile(get_file_name(file)+"[10].mp4", codec='libx264')
-    if str(file).endswith(".mp3"):
+        #return str(file).replace(".mp3", "")
+        return 'pd'
+    if str(file).endswith('.mkv'):
+        #return str(file).replace(".mkv", "")
+        return 'pd'
+def convertor_replyer(file, max_time, types):
+    if str(types).startswith("audio"):
         clip = moviepy.editor.AudioFileClip(file)
         clip_list = []
         i=0
@@ -27,7 +20,18 @@ def convertor_replyer(file, max_time):
             i+=clip.duration
             print((i/max_time)*100,"%")
         print("100%")
-        moviepy.editor.concatenate_audioclips(clip_list).write_videofile(get_file_name(file)+"[10].mp3", codec='libx264')
+        moviepy.editor.concatenate_audioclips(clip_list).write_audiofile(get_file_name(file)+"[10h].mp3")
+    else:
+        clip = moviepy.editor.VideoFileClip(file)
+        clip_list = []
+        i=0
+        while i+clip.duration < max_time:
+            clip_list.append(clip)
+            i+=clip.duration
+            print((i/max_time)*100,"%")
+        print("100%")
+        moviepy.editor.concatenate_videoclips(clip_list).write_videofile(get_file_name(file)+"[10h].mp4", codec='libx264')
+
 
 #def convertor_mp3_to_mp4(file):
 #    moviepy.editor.VideoFileClip(file).audio.write_audiofile(get_file_name+".mp3")
@@ -41,4 +45,33 @@ def youtube_video_downloader(url):
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
-convertor_replyer("blblblbl GROSFLO.mp4", )
+#convertor_replyer("test.mkv", 30, "video")
+
+#command excutor
+import argparse
+from distutils.util import strtobool
+parser = argparse.ArgumentParser(description="make 10 hours of any video or audio")
+import_group = parser.add_mutually_exclusive_group()
+import_group.add_argument("-y", "--youtube", help="import from youtube url")
+import_group.add_argument("-f", "--file", help="import from file")
+parser.add_argument("-a", "--audio", action='store_true' , help="export audio")
+args = parser.parse_args()
+
+import os
+if __name__ == "__main__":
+    if args.youtube:
+        files_list = [f for f in os.listdir('.') if os.path.isfile(f)]
+        print(str(files_list[0]))
+        for f in files_list:
+            if not f.endswith(".py"):
+                os.remove(f)
+        youtube_video_downloader(args.youtube)
+        files_list = [f for f in os.listdir('.') if os.path.isfile(f)]
+        for f in files_list:
+            if not str(f).endswith(".py"):
+                print(str(f))
+                if args.audio == True:
+                    convertor_replyer(f, 36, "audio")
+                else:
+                    convertor_replyer(f, 36, "video")
+    files = [f for f in os.listdir('.') if os.path.isfile(f)]
