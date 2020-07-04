@@ -1,12 +1,10 @@
 import moviepy.editor
 
 def get_file_name(file):
-    if str(file).endswith('.mp4'):
-        return str(file).replace(".mp4", "")
-    if str(file).endswith('.mp3'):
-        return str(file).replace(".mp3", "")
-    if str(file).endswith('.mkv'):
-        return str(file).replace(".mkv", "")
+    retourn=""
+    for arg in range(len(str(file).split("/")[len(str(file).split("/"))-1].split("."))-2):
+        retourn+=str(file).split("/")[len(str(file).split("/"))-1].split(".")[arg]+"."
+    return retourn+str(file).split("/")[len(str(file).split("/"))-1].split(".")[len(str(file).split("/")[len(str(file).split("/"))-1].split("."))-2]
 
 def convertor_replyer(file, max_time, types):
     if str(types).startswith("audio"):
@@ -63,14 +61,14 @@ if __name__ == "__main__":
             if not str(f).endswith(".py"):
                 print(str(f))
                 if args.audio == True:
-                    convertor_replyer(f, 36, "audio")
+                    convertor_replyer(f, 36000, "audio")
                 else:
-                    convertor_replyer(f, 36, "video")
+                    convertor_replyer(f, 36000, "video")
     if args.file:
         files_list = [f for f in os.listdir('.') if os.path.isfile(f)]
         for f in files_list:
             if args.file == f:
                 if args.audio == True:
-                    convertor_replyer(f, 36, "audio")
+                    convertor_replyer(f, 36000, "audio")
                 else:
-                    convertor_replyer(f, 36, "video")
+                    convertor_replyer(f, 36000, "video")
