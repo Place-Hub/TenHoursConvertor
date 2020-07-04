@@ -2,14 +2,12 @@ import moviepy.editor
 
 def get_file_name(file):
     if str(file).endswith('.mp4'):
-        #return str(file).replace(".mp4", "")
-        return 'pd'
+        return str(file).replace(".mp4", "")
     if str(file).endswith('.mp3'):
-        #return str(file).replace(".mp3", "")
-        return 'pd'
+        return str(file).replace(".mp3", "")
     if str(file).endswith('.mkv'):
-        #return str(file).replace(".mkv", "")
-        return 'pd'
+        return str(file).replace(".mkv", "")
+
 def convertor_replyer(file, max_time, types):
     if str(types).startswith("audio"):
         clip = moviepy.editor.AudioFileClip(file)
@@ -32,10 +30,6 @@ def convertor_replyer(file, max_time, types):
         print("100%")
         moviepy.editor.concatenate_videoclips(clip_list).write_videofile(get_file_name(file)+"[10h].mp4", codec='libx264')
 
-
-#def convertor_mp3_to_mp4(file):
-#    moviepy.editor.VideoFileClip(file).audio.write_audiofile(get_file_name+".mp3")
-
 def convertor_mp4_to_mp3(file):
     moviepy.editor.VideoFileClip(file).audio.write_audiofile(get_file_name(file)+".mp3")
 
@@ -45,7 +39,6 @@ def youtube_video_downloader(url):
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.download([url])
 
-#convertor_replyer("test.mkv", 30, "video")
 
 #command excutor
 import argparse
@@ -61,7 +54,6 @@ import os
 if __name__ == "__main__":
     if args.youtube:
         files_list = [f for f in os.listdir('.') if os.path.isfile(f)]
-        print(str(files_list[0]))
         for f in files_list:
             if not f.endswith(".py"):
                 os.remove(f)
@@ -74,4 +66,11 @@ if __name__ == "__main__":
                     convertor_replyer(f, 36, "audio")
                 else:
                     convertor_replyer(f, 36, "video")
-    files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    if args.file:
+        files_list = [f for f in os.listdir('.') if os.path.isfile(f)]
+        for f in files_list:
+            if args.file == f:
+                if args.audio == True:
+                    convertor_replyer(f, 36, "audio")
+                else:
+                    convertor_replyer(f, 36, "video")
